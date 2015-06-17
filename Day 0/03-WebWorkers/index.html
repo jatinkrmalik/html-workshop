@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Workers Demo</title>
+    <script>
+        window.addEventListener("DOMContentLoaded", init);
+        var worker;
+
+        function init(){
+            var btnDoWork = document.getElementById("btnDoWork");
+            btnDoWork.addEventListener("click", onBtnDoWorkClick);
+
+            worker = new Worker("complexWork.js");
+            worker.addEventListener("message", onMessageFromWorker);
+        }
+        function onMessageFromWorker(evtArg){
+            var data = evtArg.data;
+            if (data === "done"){
+                displayMessage("Work Completed");
+            } else {
+                console.log("Unknown message from worker  - ", data);
+            }
+        }
+        function onBtnDoWorkClick(){
+            var dataObj = {
+                id : 101,
+                name :"Magesh"
+            };
+            worker.postMessage(dataObj);
+        }
+
+        function displayMessage(msg){
+            document.getElementById("divMessages").innerHTML += msg + "<br/>";
+        }
+    </script>
+</head>
+<body>
+    <input type="text" name="" id="">
+    <input type="button" value="Do Work" id="btnDoWork">
+    <div id="divMessages"></div>
+</body>
+</html>

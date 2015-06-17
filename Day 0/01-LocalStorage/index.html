@@ -15,6 +15,16 @@
     </style>
     <script>
         window.addEventListener("DOMContentLoaded", init);
+        window.addEventListener("storage", loadTasksFromStorage);
+
+        function loadTasksFromStorage(){
+            document.getElementById("olTaskList").innerHTML = '';
+            for(var i=0; i<localStorage.length; i++){
+                var taskId = localStorage.key(i);
+                var taskName = localStorage.getItem(taskId);
+                addTaskToList(taskId, taskName);
+            }
+        }
         function init(){
             var btnAdd = document.getElementById("btnAdd");
             btnAdd.addEventListener("click", onBtnAddClick);
@@ -22,11 +32,7 @@
             var btnRemoveCompleted = document.getElementById("btnRemoveCompleted")
             btnRemoveCompleted.addEventListener("click", onBtnRemoveCompletedClick);
 
-            for(var i=0; i<localStorage.length; i++){
-                var taskId = localStorage.key(i);
-                var taskName = localStorage.getItem(taskId);
-                addTaskToList(taskId, taskName);
-            }
+            loadTasksFromStorage();
 
         }
         function onBtnAddClick(){

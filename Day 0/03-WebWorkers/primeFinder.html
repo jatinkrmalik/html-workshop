@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prime Finder</title>
+    <script>
+    /*
+    Hints:
+    1. use parseInt("1000",10) to convert a number in string format to number format
+    */
+    window.addEventListener("DOMContentLoaded", init);
+    var worker;
+
+    function init(){
+        var findPrimeBtn = document.getElementById("btnFindPrimeCount");
+        findPrimeBtn.addEventListener("click",getPrime);
+        worker = new Worker("findPrime.js");
+        worker.addEventListener("message", onMessageFromWorker);
+    }
+        
+        function getPrime(){
+            var primeFrom = document.getElementById("txtStart").value;
+            var primeTo = document.getElementById("txtEnd").value;
+            
+            var range = {
+            primeFrom:primeFrom,
+            primeTo:primeTo
+            };
+            
+            worker.postMessage(range);
+        }
+        
+        function onMessageFromWorker(primes){
+            
+            var primeArea = document.getElementById("divMessages").innerHTML = primes.data;
+            console.log("Worker done");
+        }
+
+        
+    </script>
+</head>
+<body>
+    <label for="">Start :</label>
+    <input type="text" name="" id="txtStart">
+    <label for="">End :</label>
+    <input type="text" name="" id="txtEnd">
+    <input type="button" value="Find Prime Count" id="btnFindPrimeCount">
+    <div id="divMessages"></div>
+</body>
+</html>
